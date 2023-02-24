@@ -1,23 +1,28 @@
-use std::fs;
-
+use std::fs::{self, File};
+use std::io::prelude::*;
 fn main() {
     let mut args = std::env::args().skip(1);
     let flag = args.next().unwrap_or_else(|| help());
 
-    let conv: fn(_, _) -> _ = match flag.as_str() {
+    let conv: fn(_, _, _) -> _ = match flag.as_str() {
         "-e" => base94::encode,
         "-d" => base94::decode as _,
         _ => help(),
     };
 
-    let src = fs::read(
+    let src = File::open(
         fs::canonicalize(args.next().unwrap_or_else(|| help()))
             .expect("could not canonicalize argument"),
     )
-    .expect("could not read file");
-    fs::write(
-        args.next().unwrap_or_else(|| help()),
-        &conv(&src, base94::BASE94),
+    .expect("could not open file")
+    .bytes()
+    .map(|i| i.expect("could not read file"));
+
+    conv(
+        src,
+        &mut File::create(args.next().unwrap_or_else(|| help()))
+            .expect("could not create destination file"),
+        base94::BASE94,
     )
     .expect("could not write to file");
 }
