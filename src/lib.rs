@@ -1,5 +1,4 @@
 pub const BASE94: &[u8;94] = br##"!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"##;
-pub const BASE95: &[u8;95] = br##" !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"##;
 
 pub fn encode(src: &[u8], allowed_bytes: &[u8]) -> Vec<u8> {
     assert!((0..allowed_bytes.len() - 1).all(|i| allowed_bytes[i] < allowed_bytes[i + 1]));

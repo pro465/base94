@@ -17,7 +17,7 @@ fn main() {
     .expect("could not read file");
     fs::write(
         args.next().unwrap_or_else(|| help()),
-        &conv(&src, base94::BASE95),
+        &conv(&src, base94::BASE94),
     )
     .expect("could not write to file");
 }
